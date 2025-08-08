@@ -11,5 +11,11 @@ export interface GeneratedImageProps {
     height?: string;
     action: (imagePath: string) => void
 }
+export type RequestProps = {
+    prompt: string;
+}
+
+export const WIDTH = 512
+export const HEIGHT = 512
 
 export type ImageProps = Pick<GeneratedImageProps, 'imageUrl' | 'prompt'>
