@@ -1,1 +1,2 @@
-# Project-0x07 
+# AI Photo generation App
+
