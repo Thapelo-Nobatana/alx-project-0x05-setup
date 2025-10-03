@@ -10,26 +10,28 @@ const Home: React.FC = () => {
     message: string;
   }
 
-  const { isLoading, responseData, generatedImages, fetchData } = useFetchData<GenerateImageResponse, { prompt: string }>();
+  const { isLoading, responseData, generatedImages, fetchData } = useFetchData<
+    GenerateImageResponse,
+    { prompt: string }
+  >();
 
-  const handleGenerateImage =  () => {
-    fetchData('/api/generate-image', { prompt })
-  }
-
+  const handleGenerateImage = () => {
+    fetchData("/api/generate-image", { prompt });
+  };
 
   useEffect(() => {
     if (!isLoading) {
-      setImageUrl(responseData?.message ?? "")
+      setImageUrl(responseData?.message ?? "");
     }
-  }, [isLoading, responseData?.message])
-
-
+  }, [isLoading, responseData?.message]);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
       <div className="flex flex-col items-center">
-        <h1 className="text-4xl font-bold mb-2">Image Generation App</h1>
-        <p className="text-lg text-gray-700 mb-4">
+        <h1 className="text-4xl text-gray-900 font-bold mb-2">
+          Image Generation App
+        </h1>
+        <p className="text-lg text-gray-900 mb-4">
           Generate stunning images based on your prompts!
         </p>
 
@@ -39,42 +41,45 @@ const Home: React.FC = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Enter your prompt here..."
-            className="w-full p-3 border border-gray-300 rounded-lg mb-4"
+            className="w-full p-3 border text-black border-gray-300 rounded-lg mb-4"
           />
           <button
             onClick={handleGenerateImage}
             className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
           >
-            {
-              isLoading ? "Loading..." : "Generate Image"
-            }
+            {isLoading ? "Loading..." : "Generate Image"}
           </button>
         </div>
 
-        {responseData?.message && <ImageCard action={() => setImageUrl( imageUrl)} imageUrl={imageUrl} prompt={prompt} />}
+        {responseData?.message && (
+          <ImageCard
+            action={() => setImageUrl(imageUrl)}
+            imageUrl={imageUrl}
+            prompt={prompt}
+            width="w-full"
+            height="h-40"
+          />
+        )}
       </div>
-      {
-        generatedImages.length ? (
-          <div className="">
-            <h3 className="text-xl text-center mb-4">Generated Images</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 border max-w-full md:max-w-[1100px] p-2 overflow-y-scroll h-96">
-              {generatedImages?.map(
-                ({ imageUrl, prompt }: ImageProps, index) => (
-                  <ImageCard
-                    action={() => setImageUrl(imageUrl)}
-                    imageUrl={imageUrl}
-                    prompt={prompt}
-                    key={index}
-                    width="w-full"
-                    height="h-40"
-                  />
-                )
-              )}
-            </div>
+      {generatedImages.length ? (
+        <div className="">
+          <h3 className="text-xl text-center mb-4">Generated Images</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 border max-w-full md:max-w-[1100px] p-2 overflow-y-scroll h-96">
+            {generatedImages?.map(({ imageUrl, prompt }: ImageProps, index) => (
+              <ImageCard
+                action={() => setImageUrl(imageUrl)}
+                imageUrl={imageUrl}
+                prompt={prompt}
+                key={index}
+                width="w-full"
+                height="h-40"
+              />
+            ))}
           </div>
-
-        ) : ""
-      }
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
